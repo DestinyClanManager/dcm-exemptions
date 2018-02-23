@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^1.26.0"
+  },
+  "dependencies": {
+    "uuid": "^3.2.1"
+  }
 }

@@ -1,3 +1,4 @@
+const uuid = require('uuid/v4')
 const AWS = require('aws-sdk')
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
@@ -24,8 +25,13 @@ module.exports.getExemptions = (event, context, callback) => {
 
     const response = {
       statusCode: 200,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify(result.Item.exemptions)
+      headers: { 'Access-Control-Allow-Origin': '*' }
+    }
+
+    if (!result.Item) {
+      response.body = '{}'
+    } else {
+      response.body = JSON.stringify(result.Item.exemptions)
     }
 
     callback(null, response)
@@ -35,6 +41,9 @@ module.exports.getExemptions = (event, context, callback) => {
 module.exports.createExemption = (event, context, callback) => {
   const clanId = event.pathParameters.clanId
   const newExemption = JSON.parse(event.body)
+
+  newExemption.id = uuid()
+
   const getExemptionsQuery = {
     TableName: process.env.EXEMPTIONS_TABLE,
     Key: { id: `${clanId}` }
@@ -80,7 +89,8 @@ module.exports.createExemption = (event, context, callback) => {
 
       callback(null, {
         statusCode: 201,
-        body: JSON.stringify(newExemption)
+        body: JSON.stringify(newExemption),
+        headers: { 'Access-Control-Allow-Origin': '*' }
       })
     })
   })
