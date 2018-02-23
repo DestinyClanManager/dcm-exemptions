@@ -53,6 +53,19 @@ functions:
               paths:
                 clanId: true
 
+  editExemption:
+    handler: handler.editExemption
+    events:
+      - http:
+          path: exemptions/{clanId}/{membershipId}
+          method: put
+          cors: true
+          request:
+            parameters:
+              paths:
+                clanId: true
+                membershipId: true
+
 resources:
   Resources:
     DestinyClanManagerExemptionsTable:
