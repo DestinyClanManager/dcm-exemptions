@@ -129,7 +129,7 @@ module.exports.editExemption = (event, context, callback) => {
       return new Date(b.startDate) - new Date(a.startDate)
     })
 
-    const latestExemption = exemptionsHistory[exemptionsHistory.length - 1]
+    const latestExemption = exemptionsHistory[0]
     const today = moment.utc().format()
 
     if (today > latestExemption.endDate) {
