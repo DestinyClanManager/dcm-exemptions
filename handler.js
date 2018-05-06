@@ -126,10 +126,10 @@ module.exports.editExemption = (event, context, callback) => {
 
     const exemptionsHistory = JSON.parse(JSON.stringify(exemptions[membershipId].history))
     exemptionsHistory.sort((a, b) => {
-      return new Date(b.startDate) - new Date(a.startDate)
+      return new Date(a.startDate) - new Date(b.startDate)
     })
 
-    const latestExemption = exemptionsHistory[0]
+    const latestExemption = exemptionsHistory[exemptionsHistory.length - 1]
     const today = moment.utc().format()
 
     if (today > latestExemption.endDate) {
