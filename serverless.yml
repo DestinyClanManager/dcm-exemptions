@@ -10,27 +10,27 @@ service: dcm-exemptions
 # The `provider` block defines where your service will be deployed
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   stage: dev
   region: us-east-1
   environment:
     EXEMPTIONS_TABLE: dcm_exemptions_${opt:stage, self:provider.stage}
 
   iamRoleStatements:
-  - Effect: Allow
-    Action:
-      - dynamodb:Query
-      - dynamodb:Scan
-      - dynamodb:GetItem
-      - dynamodb:PutItem
-      - dynamodb:UpdateItem
-      - dynamodb:DeleteItem
-    Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.EXEMPTIONS_TABLE}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.EXEMPTIONS_TABLE}'
 
 # The `functions` block defines what code to deploy
 functions:
   getExemptions:
-    handler: handler.getExemptions
+    handler: src/handler.getExemptions
     events:
       - http:
           path: exemptions/{clanId}
@@ -42,7 +42,7 @@ functions:
                 clanId: true
 
   createExemption:
-    handler: handler.createExemption
+    handler: src/handler.createExemption
     events:
       - http:
           path: exemptions/{clanId}
@@ -54,7 +54,7 @@ functions:
                 clanId: true
 
   editExemption:
-    handler: handler.editExemption
+    handler: src/handler.editExemption
     events:
       - http:
           path: exemptions/{clanId}/{membershipId}
@@ -73,12 +73,10 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: id
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
