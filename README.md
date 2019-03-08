@@ -1,6 +1,7 @@
 # dcm-exemptions
 
 [![Build status](https://dev.azure.com/heymrcarter/Destiny%20Clan%20Manager/_apis/build/status/DCM-Exemptions)](https://dev.azure.com/heymrcarter/Destiny%20Clan%20Manager/_build/latest?definitionId=-1)
+![Release status](https://vsrm.dev.azure.com/heymrcarter/_apis/public/Release/badge/7e5f3784-dda9-4bf0-9c99-7bde292990b9/8/22)
 
 > Exemption microservice for Destiny Clan Manager
 
