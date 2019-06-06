@@ -1,8 +1,9 @@
 const supertest = require('supertest')
+const moment = require('moment')
 const idRegex = new RegExp(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i)
 
 describe('Exemption API', () => {
-  let request, createdExemption, editedExemption
+  let request, createdExemption, editedExemption, startDate, endDate, newEndDate
 
   beforeEach(() => {
     request = supertest(process.env.BASE_URL)
@@ -10,11 +11,15 @@ describe('Exemption API', () => {
 
   describe('createExemption', () => {
     beforeEach(async () => {
+      startDate = moment().format('YYYY-MM-DD')
+      endDate = moment()
+        .add(1, 'month')
+        .format('YYYY-MM-DD')
       const exemption = {
         adminMembershipId: 'admin-membership-id',
         adminMembershipType: 'bungienet',
-        startDate: '2019-02-12',
-        endDate: '2019-03-12',
+        startDate,
+        endDate,
         membershipId: 'membership-id'
       }
       const response = await request
@@ -28,8 +33,8 @@ describe('Exemption API', () => {
     it('returns the created exemption', () => {
       expect(createdExemption.adminMembershipId).toEqual('admin-membership-id')
       expect(createdExemption.adminMembershipType).toEqual('bungienet')
-      expect(createdExemption.startDate).toEqual('2019-02-12')
-      expect(createdExemption.endDate).toEqual('2019-03-12')
+      expect(createdExemption.startDate).toEqual(startDate)
+      expect(createdExemption.endDate).toEqual(endDate)
       expect(createdExemption.membershipId).toEqual('membership-id')
       expect(createdExemption.id).toBeUUID()
     })
@@ -37,8 +42,11 @@ describe('Exemption API', () => {
 
   describe('editExemption', () => {
     beforeEach(async () => {
+      newEndDate = moment()
+        .add(14, 'days')
+        .format('YYYY-MM-DD')
       const edit = Object.assign({}, createdExemption, {
-        endDate: '2019-02-22'
+        endDate: newEndDate
       })
       const response = await request
         .put(`/clan-id/membership-id`)
@@ -51,8 +59,8 @@ describe('Exemption API', () => {
     it('returns the edited exemption', () => {
       expect(editedExemption.adminMembershipId).toEqual('admin-membership-id')
       expect(editedExemption.adminMembershipType).toEqual('bungienet')
-      expect(editedExemption.startDate).toEqual('2019-02-12')
-      expect(editedExemption.endDate).toEqual('2019-02-22')
+      expect(editedExemption.startDate).toEqual(startDate)
+      expect(editedExemption.endDate).toEqual(newEndDate)
       expect(editedExemption.membershipId).toEqual('membership-id')
       expect(editedExemption.id).toEqual(createdExemption.id)
     })
