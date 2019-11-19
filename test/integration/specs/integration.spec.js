@@ -1,6 +1,5 @@
 const supertest = require('supertest')
 const moment = require('moment')
-const idRegex = new RegExp(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i)
 
 describe('Exemption API', () => {
   let request, createdExemption, editedExemption, startDate, endDate, newEndDate
